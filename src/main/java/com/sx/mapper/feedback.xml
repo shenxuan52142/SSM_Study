@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sx.mapper.feedbackInfoMapper">
+    <insert id="sendFeedback" parameterType="feedbackInfo" >
+        insert INTO
+           feedback_info(
+              id,
+              url,
+              comm,
+              type1,
+              type2,
+              type3,
+              type4,
+              time
+           )
+           VALUES (
+            #{id},
+            #{url},
+            #{comm},
+            #{type1},
+            #{type2},
+            #{type3},
+            #{type4},
+            now()
+           )
+    </insert>
+ <!--<select id=""-->
+    <select id="getone" parameterType="int" resultType="String">
+        SELECT comm FROM feedback_info WHERE id=#{id}
+    </select>
+    <insert id="addlist" parameterType="feedbackInfo" >
+        INSERT INTO
+  feedback_info(
+              id,
+              url,
+              comm,
+              type1,
+              type2,
+              type3,
+              type4
+           )
+           <foreach collection="list" item="feedbackInfo" index="index" separator="union all">
+               SELECT
+               #{feedbackInfo.id},
+               #{feedbackInfo.url},
+               #{feedbackInfo.comm},
+               #{feedbackInfo.type1},
+               #{feedbackInfo.type2},
+               #{feedbackInfo.type3},
+               #{feedbackInfo.type4}
+               FROM dual
+           </foreach>
+    </insert>
+
+    <select id="getall" parameterType="int" resultType="feedbackInfo">
+        SELECT * FROM
+        feedback_info LEFT JOIN feedback_type ON
+        feedback_info.id=feedback_type.id
+        where feedback_info.ucid=#{ucid}
+        GROUP BY feedback_info.id
+    </select>
+
+    <insert id="addfeedbacktype" parameterType="feedbackInfo">
+        INSERT INTO
+        feedback_type(
+        id,
+        name
+        )
+        <foreach collection="name" item="feedbackInfo" index="index" separator="union all">
+            #{id},
+            SELECT
+            #{name}
+            FROM dual
+        </foreach>
+    </insert>
+</mapper>

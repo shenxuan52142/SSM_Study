@@ -17,7 +17,7 @@ public class feedbackImpl implements feedbackSce {
      feedbackInfoMapper.sendFeedback(feedbackInfo);
     }
 
-    public List<String> getone(int id) {
+    public feedbackInfo getone(int id) {
         return feedbackInfoMapper.getone(id);
     }
 
@@ -34,6 +34,11 @@ public class feedbackImpl implements feedbackSce {
 
 
     public void addfeedbacktype(feedbackInfo feedbackInfo) {
+
          feedbackInfoMapper.addfeedbacktype(feedbackInfo);
+    }
+
+    public feedbackInfo getOneFeedbackInfo(feedbackInfo feedbackInfo) {
+        return feedbackInfoMapper.getOneFeedbackInfo(feedbackInfo);
     }
 }

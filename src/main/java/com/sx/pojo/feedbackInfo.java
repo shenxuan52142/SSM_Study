@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 public class feedbackInfo {
-    public Date getTime() {
+    public String  getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -17,7 +17,8 @@ public class feedbackInfo {
     private String comm;
     private String type1;
     private String type2;
-    private Date time;
+    private String time;
+    private String ucId;
     private List<String> name;
 
     public int getUcid() {
@@ -107,6 +108,14 @@ public class feedbackInfo {
         this.comm = comm;
     }
 
+    public String getUcId() {
+        return ucId;
+    }
+
+    public void setUcId(String ucId) {
+        this.ucId = ucId;
+    }
+
     @Override
     public String toString() {
         return "feedbackInfo{" +
@@ -122,5 +131,15 @@ public class feedbackInfo {
     }
     public void sout(){
         System.out.println("______________________");
+    }
+
+    @Override
+    public  int hashCode(){
+        return ucId.hashCode()*37+id;
+    }
+    @Override
+    public boolean equals(Object obj){
+        return obj instanceof feedbackInfo && this.ucId.equals(((feedbackInfo)obj).ucId) && this.id==((feedbackInfo)obj).id;
+
     }
 }

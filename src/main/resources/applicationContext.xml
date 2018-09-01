@@ -21,7 +21,7 @@
             <value>com.mysql.jdbc.Driver</value>
         </property>
         <property name="url">
-            <value>jdbc:mysql://localhost:3306/school?characterEncoding=UTF-8&amp;rewriteBatchedStatements=true</value>
+            <value>jdbc:mysql://localhost:3306/ptteng?characterEncoding=UTF-8&amp;rewriteBatchedStatements=true</value>
         </property>
         <property name="username">
             <value>root</value>
@@ -45,7 +45,7 @@
         <property name="mapperLocations" value="classpath:com/sx/mapper/*.xml"/>
     </bean>
 
-    <bean id="ThreadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+    <bean id="ThreadPoolTaskExecutor " class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <property name="corePoolSize" value="5" />
         <property name="maxPoolSize" value="10" />
         <property name="queueCapacity" value="25" />

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -42,8 +43,8 @@ public class test {
 
     @Test
     public void test1() {
-       List<String> list=feedbackSce.getone(1);
-       System.out.println(list);
+//       List<String> list=feedbackSce.getone(1);
+//       System.out.println(list);
 
 
     }
@@ -168,7 +169,13 @@ feedback.setType4("1");
 feedback.setId(2);
 feedback.setUrl("222222222222222");
 feedback.setComm("cccccccccccc");
-feedbackSce.sendfeedback(feedback);
+String var1=JSONObject.toJSONString(feedback);
+
+JSONObject json =JSONObject.parseObject(var1);
+String var2=json.getString("type1");
+        System.out.println(var2);
+
+
 
 
 
@@ -272,27 +279,126 @@ public void test3() {
 }
 @Test
     public void test6(){
-        feedbackInfo feedbackInfo=new feedbackInfo();
-        List<String> list=feedbackInfo.getType();
-        if (list==null){
-            System.out.println("null");
-        }
-        if (list.isEmpty()){
-            System.out.println("empty");
-        }
-
-        List<MultipartFile> files=new ArrayList<MultipartFile>();
+ String a="1";
+ if (a=="1"){
+     System.out.println(1);
+ }else {
+     System.out.println(0);
+ }
 
 }
 @Test
     public void tedt7(){
-//  taskExecutor.execute(new Study());
-    SimpleDateFormat type1=new SimpleDateFormat("yy/M/dd");
-    Date now=new Date();
-    String var=type1.format(now);
-    System.out.println(var);
+//  taskExecutor.execute(new Study());;
+feedbackInfo feedbackInfo=new feedbackInfo();
+feedbackInfo.setId(37);
+feedbackInfo.setUcId("1993");
+feedbackInfo.setTime("2018-07-20 15:30:48");
+feedbackSce.sendfeedback(feedbackInfo);
+}
+@Test
+    public void test8(){
+        feedbackInfo feedbackInfo=feedbackSce.getone(12);
+        SimpleDateFormat type1=new SimpleDateFormat("yyyy年M月d日");
+
+//        Date date=feedbackInfo.getTime();
+//        String var1=type1.format(date);
+//    System.out.println(var1);
+}
+@Test
+    public void  test9()throws  Exception{
+        String meaasge="报名成功：尊敬的泰幸福用户，{0}活动报名成功，活动时间为{1}，期待为您带来优质的活动体验。";
+        String meaasge2="报名成功：尊敬的泰幸福用户，{0}活动报名成功，期待为您带来优质的活动体验{1,number,integer}。";
+//        Object[] array=new Object[]{"法律咨询","2018年8月1日"};
+//        String var1=MessageFormat.format(meaasge,array);
+//        System.out.println(var1);
+        int a=123456789;
+        String result= MessageFormat.format(meaasge,"法律咨询","2018年8月1日","hshshshshh",a);
+        System.out.println(result);
+        String result2=MessageFormat.format(meaasge2,"法律咨询","2018年8月1日","hshshshshh",a);
+    System.out.println(result2);
+
+
+//
+//    String meaasge2="报名成功：尊敬的泰幸福用户，%s活动报名成功，活动时间为%tc%n，期待为您带来优质的活动体验。";
+//    Date date=new Date();
+//    String result2=String.format(meaasge2,"法律咨询",date);
+//    System.out.println(result2);
+////    String result3=String.format(meaasge2,array);
+////    System.out.println(result3);
+    String var1="2018-08-13 14:34:58";
+    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date date=format.parse(var1);
+    System.out.println(date);
+    SimpleDateFormat format1=new SimpleDateFormat("yyyy年M月d日");
+    System.out.println(format1.format(date));
 }
 
+@Test
+    public void test10(){
+   feedbackInfo feedbackInfo=new feedbackInfo();
+    feedbackInfo.setType1("1");
+    feedbackInfo.setType2("2");
+    feedbackInfo.setType3("3");
+    feedbackInfo.setType4("1");
+    feedbackInfo.setId(2);
+    feedbackInfo.setUrl("222222222222222");
+    feedbackInfo.setComm("cccccccccccc");
+
+    feedbackInfo feedbackInfo1=new feedbackInfo();
+    feedbackInfo1.setType1("1");
+    feedbackInfo1.setType2("2");
+    feedbackInfo1.setType3("3");
+    feedbackInfo1.setType4("1");
+    feedbackInfo1.setId(2);
+    feedbackInfo1.setUrl("222222222222222");
+    feedbackInfo1.setComm("vvvvvvvvv");
+
+    JSONArray jsonArray=new JSONArray();
+    jsonArray.add(feedbackInfo);
+    jsonArray.add(feedbackInfo1);
+    System.out.println(jsonArray);
+    JSONObject json =new JSONObject();
+    json.put("COde","01");
+    json.put("serviceList",jsonArray);
+    System.out.println(json);
+    System.out.println(json.toJSONString());
+
+//    JSONObject json=new JSONObject();
+//    json.put("errorMsg","失败");
+//
+//
+//    JSONObject jsonObject=new JSONObject();
+//    jsonObject.put("respCode","01");
+//    jsonObject.put("respBizeMsg",json);
+//    String var1= jsonObject.toJSONString();
+//    System.out.println(var1);
+//
+//
+//    JSONObject parseObject=JSONObject.parseObject(var1);
+//    String var2=parseObject.getString("respBizeMsg");
+//    String var3=null;
+//    var3=parseObject.getString("ddd");
+//    System.out.println(var3);
+//    System.out.println(var2);
+
+}
+@Test
+public void test11(){
+     feedbackInfo feedbackInfo=new feedbackInfo();
+     feedbackInfo.setId(12);
+     feedbackInfo.setUcId("呵呵");
+     feedbackInfo.setComm("第一个对象");
+     feedbackInfo feedbackInfo1=new feedbackInfo();
+     feedbackInfo1.setId(12);
+     feedbackInfo1.setUcId("呵呵");
+     feedbackInfo1.setComm("第二个对象");
+    System.out.println(feedbackInfo.hashCode());
+    System.out.println(feedbackInfo1.hashCode());
+    System.out.println(feedbackInfo.equals(feedbackInfo1));
+    Study study=new Study();
+    study.hashCode();
+}
 }
 
 

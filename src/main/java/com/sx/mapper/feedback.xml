@@ -13,7 +13,8 @@
               type2,
               type3,
               type4,
-              time
+              time,
+              ucid
            )
            VALUES (
             #{id},
@@ -23,12 +24,13 @@
             #{type2},
             #{type3},
             #{type4},
-            now()
+            #{time},
+            #{ucId}
            )
     </insert>
  <!--<select id=""-->
-    <select id="getone" parameterType="int" resultType="String">
-        SELECT comm FROM feedback_info WHERE id=#{id}
+    <select id="getone" parameterType="int" resultType="com.sx.pojo.feedbackInfo">
+        SELECT * FROM feedback_info WHERE id=#{id}
     </select>
     <insert id="addlist" parameterType="feedbackInfo" >
         INSERT INTO
@@ -75,4 +77,26 @@
             FROM dual
         </foreach>
     </insert>
+
+    <select id="getOneFeedbackInfo" parameterType="com.sx.pojo.feedbackInfo" resultType="com.sx.pojo.feedbackInfo">
+        SELECT *FROM feedback_info
+        <where>
+            <if test="id!=null and id!=''">
+              id=#{id}
+            </if>
+            <if test="ucId!=null and ucId!=''">
+                AND ucid=#{ucId}
+            </if>
+
+        </where>
+    </select>
+    <update id="updateFeedbackInfo" parameterType="com.sx.pojo.feedbackInfo">
+        UPDATE feedback_info
+          <set>
+              <if test="url!=null and ">
+
+              </if>
+          </set>
+    </update>
+
 </mapper>

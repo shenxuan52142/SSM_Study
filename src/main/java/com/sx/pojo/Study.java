@@ -7,7 +7,16 @@ public class Study implements Runnable{
         return "hehe";
     }
 
+    public static void main(String[] args) {
+//        Peeler peeler=new Peeler();
+//        peeler.eat();
+//        System.out.println(peeler.var2);
+//        Person person=new Person();
+//
 
+
+
+    }
 
 
 

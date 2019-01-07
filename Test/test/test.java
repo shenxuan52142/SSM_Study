@@ -1,34 +1,67 @@
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sx.mapper.studentMapper;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.tokenizer.SpeedTokenizer;
+import com.sx.aop.LoggerAspect;
+import com.sx.mapper.ArticleRepository;
 import com.sx.pojo.*;
+import com.sx.service.FeedbackInfoSearchService;
 import com.sx.service.StudentSService;
 import com.sx.service.feedbackSce;
-import com.sx.service.impl.StudentSServiceImpl;
 import com.sx.service.studentService;
-import org.apache.commons.lang.StringUtils;
+import com.sx.until.HaoMaiClient;
+import com.sx.until.HttpConnectionPoolUtil;
+import com.sx.until.Weather;
+import org.apache.commons.collections.map.CaseInsensitiveMap;
+
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+//import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
+import javax.annotation.Resource;
+import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URI;
+import java.net.URL;
+import java.text.*;
 import java.util.*;
+
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:applicationContext.xml")
 public class test {
 
     @Autowired
-
     private studentService studentService;
     @Autowired
     private StudentSService studentSService;
@@ -36,34 +69,43 @@ public class test {
     private feedbackSce feedbackSce;
     @Autowired
     ThreadPoolTaskExecutor taskExecutor;
+    @Autowired
+    FeedbackInfoSearchService feedbackInfoSearchService;
+
+    /** 注入客户端对象 基于原生API */
 //    @Autowired
-//    ThreadPoolTaskExecutor taskExecutor;//
+//    private Client client;
+
+    /** 注入es服务器模板 */
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
+    @Autowired
+    ArticleRepository articleRepository;
+    @Resource(name = "WeatherRestTemplate")
+    private RestTemplate restTemplate;
+
+    /**
+     * 通过 ElasticsearchTemplate 创建索引和添加映射
+     */
+    @Test
+    public void createIndex() {
+        elasticsearchTemplate.createIndex(FeedbackInfo.class);
+        elasticsearchTemplate.putMapping(FeedbackInfo.class);
+    }
+
 
 
 
     @Test
-    public void test1() {
-//       List<String> list=feedbackSce.getone(1);
-//       System.out.println(list);
+    public void test1() throws Exception{
 
 
     }
 
   @Test
   public void test2(){
-        List<feedbackInfo> feedbackInfos=new ArrayList<feedbackInfo>();
-        feedbackInfo a=new feedbackInfo();
-        a.setId(8);
-        a.setUrl("sssssssssss");
-        a.setType4("2   ");
-        feedbackInfos.add(a);
-        feedbackInfo b=new feedbackInfo();
-        b.setId(10);
-        b.setComm("sdadsad");
-        b.setUrl("sdadasdasdasdas");
-        b.setType4("3");
-       feedbackInfos.add(b);
-       feedbackSce.addlist(feedbackInfos);
+
+
   }
 
 //    public static SimpleDateFormat getDateFormat() {
@@ -77,104 +119,41 @@ public class test {
     @Test
 
     public void add() {
-//        JSONObject json = new JSONObject();
-//        JSONObject respJson=new JSONObject();
+//        FeedbackInfo feedback3=new FeedbackInfo();
+//        feedback3.setId(1);
+//        feedback3.setUcId("小明爱吃苹果");
+//        feedback3.setTime("这里是时间");
+//        articleRepository.save(feedback3);
 //
-//        List<String> typelist = new ArrayList<String>();
-//        List<String> urllist=new ArrayList<String>();
-//        String typ1 = "第一个类型";
-//        String typ2 = "第二个类型";
-//        String type3 = "第三个类型";
-//        String type4 = "第四个类型";
-//
-////
-////        ArrayList<String> aaa=new ArrayList<String>();
-////        aaa.add(typ1);
-//////        aaa.add(typ2);
-////        aaa.add(type3);
-////        aaa.add(type4);
-////        String bbb=StringUtils.join(aaa,"、");
-////        System.out.println(bbb);
-//
-////  String mobil="768611660@qq.com";
-////  String a= "shenxuan1hao@163.com";
-////  String c="sdadda@13.cm";
-////Boolean b=check.checkEmail(mobil);
-////        System.out.println(b);
-////        System.out.println(check.checkEmail(a));
-////        System.out.println(check.checkEmail(c));
-//
-//        ;
-//
-//        String[] aaa=new String[4];
-//        ArrayList<String> ccc=new ArrayList<String>();
-//        ccc.add(typ1);
-//        ccc.add(typ2);
-//        ccc.add(type3);
-//        ccc.add(type4);
-//        String ddd=ccc.
-//        String bbb= StringUtils.join(aaa,"、");
-//        System.out.println(bbb);
-//
-//        typelist.add("第一个类型");
-//        typelist.add("第二个类型");
-//        typelist.add("第三个类型");
-//
-//
-//        urllist.add("11111111111111");
-//        urllist.add("22222222222222");
-//        urllist.add("333333333333333");
-//        urllist.add("4444444444444444444");
-//
-//
-//        json.put("type", typelist);
-//        json.put("comm", "sdfsdfsdfsdfds");
-//        json.put("url", urllist);
-//        json.put("id", "1");
-//        String resMSg = json.toJSONString(json);
-//        feedbackInfo feedbackInfo = null;
-//        feedbackInfo = JSONObject.parseObject(resMSg, com.sx.pojo.feedbackInfo.class);
-//        System.out.println(feedbackInfo.getType4());
-//        List<String> type = feedbackInfo.getType();
-//        for (String var1 : type) {
-//           if(var1.equals(typ1)){
-//               feedbackInfo.setType1("1");
-//            }
-//            if (var1.equals(typ2)){
-//               feedbackInfo.setType2("1");
-//            }
-//            if (var1.equals(type3)){
-//               feedbackInfo.setType3("1");
-//            }
-//            if (var1.equals(type4)){
-//               feedbackInfo.setType4("1");
-//            }
-//     var1.equals(typ1)?feedbackInfo.setType1("1"):feedbackInfo.setType1("
-//        }
-//        System.out.println(type);
-//        feedbackSce.sendFeedbackTyp(feedbackInfo);
-//        String type=feedbackInfo.getType();
-//        System.out.println(type);
+//        FeedbackInfo feedback4=new FeedbackInfo();
+//        feedback4.setId(2);
+//        feedback4.setUcId("明天买苹果");
+//        feedback4.setTime("这里是时间");
+//        articleRepository.save(feedback4);
 
-//
-//        System.out.println(feedbackInfo.getUrl());
-//        JSONArray jsonArray=JSONArray.parseArray(feedbackInfo.getUrl());
-//        System.out.println(jsonArray);
-//        feedbackSce.sendfeedback(feedbackInfo);
-feedbackInfo feedback=new feedbackInfo();
-feedback.setType1("1");
-feedback.setType2("2");
-feedback.setType3("3");
-feedback.setType4("1");
-feedback.setId(2);
-feedback.setUrl("222222222222222");
-feedback.setComm("cccccccccccc");
-String var1=JSONObject.toJSONString(feedback);
+        FeedbackInfo feedback5=new FeedbackInfo();
+        feedback5.setId(6);
+        feedback5.setUcId("小明爱吃水果");
+        feedback5.setTime("这里是时间");
+        articleRepository.save(feedback5);
 
-JSONObject json =JSONObject.parseObject(var1);
-String var2=json.getString("type1");
-        System.out.println(var2);
+        FeedbackInfo feedback6=new FeedbackInfo();
+        feedback6.setId(4);
+        feedback6.setUcId("明日复明日");
+        feedback6.setTime("这里是时间");
+        articleRepository.save(feedback6);
 
+        FeedbackInfo feedback7=new FeedbackInfo();
+        feedback7.setId(5);
+        feedback7.setUcId("我有一块钱");
+        feedback7.setTime("这里是时间");
+        articleRepository.save(feedback7);
+
+//        FeedbackInfo feedback8=new FeedbackInfo();
+//        feedback8.setId(6);
+//        feedback8.setUcId("这有水果");
+//        feedback8.setTime("这里是时间");
+//        articleRepository.save(feedback8);
 
 
 
@@ -183,51 +162,18 @@ String var2=json.getString("type1");
     }
     @Test
     public void get(){
-//        feedbackInfo feedback=feedbackSce.getone(2);
-//        SimpleDateFormat sdf =new SimpleDateFormat();
-//        String a=feedback.getTime();
-//        System.out.println(a);
-//        DateFormat df = new SimpleDateFormat(a);
-//        Calendar cal=df.getCalendar();
-//        int day=cal.get(Calendar.DATE);
-//        System.out.println(day);
+        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("url", "小明送给小红一个巧克力");
 
-//
-//      feedbackInfo f1=feedbackSce.getone(2);
-//      feedbackInfo f2=feedbackSce.getone(3);
-//      feedbackInfo f3=feedbackSce.getone(4);
-//      feedbackInfo f4=feedbackSce.getone(5);
-//
-//    Date a=f1.getTime();
-//    Date b=f2.getTime();
-//    check check=new check();
-//    String varq= check.checkDate(a);
-//        System.out.println(check.checkDate(a));
-//        System.out.println(check.checkDate(b));
-//        System.out.println(check.checkDate(f3.getTime()));
-//        System.out.println(check.checkDate(f4.getTime()));
+        Iterable<FeedbackInfo> feedbackInfos= feedbackInfoSearchService.findAll("小明送给小红一个巧克力");
+        Iterator<FeedbackInfo> iterator = feedbackInfos.iterator();
+        for (FeedbackInfo feedbackInfo:feedbackInfos){
+            String date=feedbackInfo.getUpdate_time();
+//            date=date.replace("T", " UTC");
+            System.out.println(date);
+            System.out.println(feedbackInfo.getUrl());
 
-//        System.out.println(a);//7.1
-//        System.out.println(b);
-//
-//
-//
-//        Calendar pre = Calendar.getInstance();
-//        pre.setTime(a);
-//        Calendar cal =Calendar.getInstance();
-//        cal.setTime(b);
-//
-//        int f=cal.get(Calendar.MINUTE);
-//        System.out.println(f);
-//
-//
-//        int c = cal.get(Calendar.DAY_OF_YEAR)
-//                - pre.get(Calendar.DAY_OF_YEAR);
-//        System.out.println(c);
-//
-//        int d = pre.get(Calendar.DAY_OF_YEAR)
-//                - cal.get(Calendar.DAY_OF_YEAR);
-//        System.out.println(d);
+
+        }
 
     }
 
@@ -240,112 +186,180 @@ String var2=json.getString("type1");
 
 
     @Test
-public void test3() {
+public void test3() throws Exception {
+        for (int i = 0; i < 10; i++) {
+            Thread.sleep(1000);
+            HashMap map = new HashMap();
+            map.put("location", "CN101011300");
+            map.put("username", "HE1812281450091928");
+            long timestanp = new Date().getTime();
+            map.put("t", timestanp);
+            String secret = "cca7927e496245a5be692292c66983b7";
 
-    String[] arr = new String[6];
-    arr[0] = "一";
-    arr[1] = "二";
-    arr[2] = "三";
-    arr[3] = "四";
-    arr[4] = "五";
-    arr[5] = "df";
-    for (String var1:arr) {
-        System.out.println(var1);
+            String username = "HE1812281450091928";
+            String var1 = Weather.getSignature(map, secret);
+
+            StringBuffer stringBuffer1 = new StringBuffer();
+            stringBuffer1.append("https://api.heweather.com/s6/weather/now").append("?location=CN101011300")
+                    .append("&username=").append(username)
+                    .append("&t=").append(timestanp)
+                    .append("&sign=").append(var1);
+            URI uri1 = URI.create(stringBuffer1.toString());
+            String respone1 = restTemplate.getForObject(uri1, String.class);
+            System.out.println(respone1);
+//
+//            StringBuffer stringBuffer = new StringBuffer();
+//            stringBuffer.append("https://free-api.heweather.com/s6/air/now").append("?location=CN101011300")
+//                    .append("&key=").append(secret);
+//            URI uri = URI.create(stringBuffer.toString());
+//            String respone = restTemplate.getForObject(uri, String.class);
+//            System.out.println(respone);
+
+
+
+        }
     }
 
 
 
-}
+
 @Test
-    public void test4(){
-        List<feedbackInfo> feedbackInfoList=feedbackSce.getall(1993);
-        for (feedbackInfo feedbackInfo:feedbackInfoList){
-            System.out.println(feedbackInfo.getName());
-            System.out.println(feedbackInfo.getTime());
+    public void test4()throws Exception{
+        for (int i=0;i<20;i++) {
+//            Thread.sleep(2000);
+            HashMap map = new HashMap();
+            map.put("location", "CN101050501");
+            map.put("username", "HE1812281450091928");
+            long timestanp = new Date().getTime();
+            map.put("t", String.valueOf(timestanp));
+            String secret = "cca7927e496245a5be692292c66983b7";
+
+            String username = "HE1812281450091928";
+            String var1 = Weather.getSignature(map, secret);
+
+            StringBuffer stringBuffer1 = new StringBuffer();
+            stringBuffer1.append("location=CN101050501")
+                    .append("&username=").append(username)
+                    .append("&t=").append( String.valueOf(timestanp))
+                    .append("&sign=").append(var1);
+
+//    String params="sign=xxxxxxxxxxxxxxxxxxxx&username=xxxxxxxxxxxxxxxxxxx&location=北京&t=秒级时间戳";
+            String params = stringBuffer1.toString();
+            StringBuilder sb = new StringBuilder();
+            InputStream is = null;
+            BufferedReader br = null;
+            PrintWriter out = null;
+            try {
+                //接口地址
+                String url = "https://api.heweather.com/s6/weather/now";
+                URL uri = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) uri.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setReadTimeout(5000);
+                connection.setConnectTimeout(10000);
+                connection.setRequestProperty("accept", "*/*");
+                //发送参数
+                connection.setDoOutput(true);
+                out = new PrintWriter(connection.getOutputStream());
+                out.print(params);
+                out.flush();
+                //接收结果
+                is = connection.getInputStream();
+                br = new BufferedReader(new InputStreamReader(is));
+                String line;
+                //缓冲逐行读取
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                System.out.println(sb.toString());
+            } catch (Exception ignored) {
+            } finally {
+                //关闭流
+                try {
+                    if (is != null) {
+                        is.close();
+                    }
+                    if (br != null) {
+                        br.close();
+                    }
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (Exception ignored) {
+                }
+            }
         }
 }
 
+
+
 @Test
     public void test5(){
-        feedbackInfo feedbackInfo=new feedbackInfo();
+        FeedbackInfo FeedbackInfo =new FeedbackInfo();
         List<String> list=new ArrayList<String>();
         list.add("第一个");
         list.add("第二个");
-        feedbackInfo.setName(list);
-        feedbackInfo.setId(23);
-        feedbackSce.addfeedbacktype(feedbackInfo);
+//        FeedbackInfo.setName(list);
+        FeedbackInfo.setId(23);
+        feedbackSce.addfeedbacktype(FeedbackInfo);
         Date a=new Date();
         a.setTime(2018/2);
 }
 @Test
     public void test6(){
- String a="1";
- if (a=="1"){
-     System.out.println(1);
- }else {
-     System.out.println(0);
- }
+      FeedbackInfo a=new FeedbackInfo();
+      a.setUcId("jjj");
+    System.out.println(a.getUcId());
+
 
 }
 @Test
     public void tedt7(){
 //  taskExecutor.execute(new Study());;
-feedbackInfo feedbackInfo=new feedbackInfo();
-feedbackInfo.setId(37);
-feedbackInfo.setUcId("1993");
-feedbackInfo.setTime("2018-07-20 15:30:48");
-feedbackSce.sendfeedback(feedbackInfo);
+FeedbackInfo FeedbackInfo =new FeedbackInfo();
+FeedbackInfo.setId(37);
+FeedbackInfo.setUcId("1993");
+FeedbackInfo.setTime("2018-07-20 15:30:48");
+feedbackSce.sendfeedback(FeedbackInfo);
 }
 @Test
     public void test8(){
-        feedbackInfo feedbackInfo=feedbackSce.getone(12);
+        FeedbackInfo FeedbackInfo =feedbackSce.getone(12);
         SimpleDateFormat type1=new SimpleDateFormat("yyyy年M月d日");
 
-//        Date date=feedbackInfo.getTime();
+//        Date date=FeedbackInfo.getTime();
 //        String var1=type1.format(date);
 //    System.out.println(var1);
 }
 @Test
     public void  test9()throws  Exception{
-        String meaasge="报名成功：尊敬的泰幸福用户，{0}活动报名成功，活动时间为{1}，期待为您带来优质的活动体验。";
-        String meaasge2="报名成功：尊敬的泰幸福用户，{0}活动报名成功，期待为您带来优质的活动体验{1,number,integer}。";
-//        Object[] array=new Object[]{"法律咨询","2018年8月1日"};
-//        String var1=MessageFormat.format(meaasge,array);
-//        System.out.println(var1);
-        int a=123456789;
-        String result= MessageFormat.format(meaasge,"法律咨询","2018年8月1日","hshshshshh",a);
-        System.out.println(result);
-        String result2=MessageFormat.format(meaasge2,"法律咨询","2018年8月1日","hshshshshh",a);
-    System.out.println(result2);
 
-
-//
-//    String meaasge2="报名成功：尊敬的泰幸福用户，%s活动报名成功，活动时间为%tc%n，期待为您带来优质的活动体验。";
-//    Date date=new Date();
-//    String result2=String.format(meaasge2,"法律咨询",date);
-//    System.out.println(result2);
-////    String result3=String.format(meaasge2,array);
-////    System.out.println(result3);
-    String var1="2018-08-13 14:34:58";
-    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date date=format.parse(var1);
-    System.out.println(date);
-    SimpleDateFormat format1=new SimpleDateFormat("yyyy年M月d日");
-    System.out.println(format1.format(date));
+    String var1="2018-08-13";
+    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat format1=new SimpleDateFormat("d日");
+    Date now=new Date(System.currentTimeMillis());
+    Calendar a=Calendar.getInstance();
+    a.setTime(now);
+    Calendar b=Calendar.getInstance();
+    b.setTime(format.parse(var1));
+   int i=a.get(Calendar.DAY_OF_MONTH);
+   int j=b.get(Calendar.DAY_OF_MONTH);
+    System.out.println(i);
+    System.out.println(j);
 }
 
 @Test
     public void test10(){
-   feedbackInfo feedbackInfo=new feedbackInfo();
-    feedbackInfo.setType1("1");
-    feedbackInfo.setType2("2");
-    feedbackInfo.setType3("3");
-    feedbackInfo.setType4("1");
-    feedbackInfo.setId(2);
-    feedbackInfo.setUrl("222222222222222");
-    feedbackInfo.setComm("cccccccccccc");
+   FeedbackInfo FeedbackInfo =new FeedbackInfo();
+    FeedbackInfo.setType1("1");
+    FeedbackInfo.setType2("2");
+    FeedbackInfo.setType3("3");
+    FeedbackInfo.setType4("1");
+    FeedbackInfo.setId(2);
+    FeedbackInfo.setUrl("222222222222222");
+    FeedbackInfo.setComm("cccccccccccc");
 
-    feedbackInfo feedbackInfo1=new feedbackInfo();
+    FeedbackInfo feedbackInfo1=new FeedbackInfo();
     feedbackInfo1.setType1("1");
     feedbackInfo1.setType2("2");
     feedbackInfo1.setType3("3");
@@ -353,16 +367,49 @@ feedbackSce.sendfeedback(feedbackInfo);
     feedbackInfo1.setId(2);
     feedbackInfo1.setUrl("222222222222222");
     feedbackInfo1.setComm("vvvvvvvvv");
+    Map<String,FeedbackInfo> map=new HashMap<String, FeedbackInfo>();
+    map.put("A1B2-G4J4", FeedbackInfo);
+    map.put("AGHJSDG-231-JHKLHJKHdjfhj",feedbackInfo1);
+   Map<String,FeedbackInfo> ssmap=new CaseInsensitiveMap();
+   ssmap.putAll(map);
+    FeedbackInfo feedbackInfo2=new FeedbackInfo();
+    feedbackInfo2=ssmap.get("a1b2-g4j4");
+    System.out.println(feedbackInfo2.getUrl());
 
-    JSONArray jsonArray=new JSONArray();
-    jsonArray.add(feedbackInfo);
-    jsonArray.add(feedbackInfo1);
-    System.out.println(jsonArray);
-    JSONObject json =new JSONObject();
-    json.put("COde","01");
-    json.put("serviceList",jsonArray);
-    System.out.println(json);
-    System.out.println(json.toJSONString());
+
+//    JSONArray array=new JSONArray();
+//    array.add(FeedbackInfo);
+//    array.add(feedbackInfo1);
+//
+//    String var1=array.toJSONString();
+//
+//    JSONArray array1=JSONArray.parseArray(var1);
+//    JSONObject jsonObject=array1.getJSONObject(1);
+//    System.out.println(jsonObject);
+//    FeedbackInfo feedbackInfo2=(FeedbackInfo) array1.get(1);
+//    System.out.println(feedbackInfo2.getUrl());
+
+//    List<FeedbackInfo> feedbackInfoList=new ArrayList<com.sx.pojo.FeedbackInfo>();
+//    feedbackInfoList.add(FeedbackInfo);
+//    feedbackInfoList.add(feedbackInfo1);
+//    JSONObject jsonObject=new JSONObject();
+//    JSONObject jsonObject1=new JSONObject();
+//
+//    jsonObject.put("list",feedbackInfoList);
+//    jsonObject.put("hghdh","dfsfs");
+//    jsonObject1.put("code",342);
+//    jsonObject1.put("bigMsg",jsonObject);
+//    System.out.println(jsonObject1.toJSONString());
+
+//    JSONArray jsonArray=new JSONArray();
+//    jsonArray.add(FeedbackInfo);
+//    jsonArray.add(feedbackInfo1);
+//    System.out.println(jsonArray);
+//    JSONObject json =new JSONObject();
+//    json.put("COde","01");
+//    json.put("serviceList",jsonArray);
+//    System.out.println(json);
+//    System.out.println(json.toJSONString());
 
 //    JSONObject json=new JSONObject();
 //    json.put("errorMsg","失败");
@@ -375,7 +422,8 @@ feedbackSce.sendfeedback(feedbackInfo);
 //    System.out.println(var1);
 //
 //
-//    JSONObject parseObject=JSONObject.parseObject(var1);
+    JSONObject parseObject=new JSONObject();
+
 //    String var2=parseObject.getString("respBizeMsg");
 //    String var3=null;
 //    var3=parseObject.getString("ddd");
@@ -385,21 +433,126 @@ feedbackSce.sendfeedback(feedbackInfo);
 }
 @Test
 public void test11(){
-     feedbackInfo feedbackInfo=new feedbackInfo();
-     feedbackInfo.setId(12);
-     feedbackInfo.setUcId("呵呵");
-     feedbackInfo.setComm("第一个对象");
-     feedbackInfo feedbackInfo1=new feedbackInfo();
-     feedbackInfo1.setId(12);
-     feedbackInfo1.setUcId("呵呵");
-     feedbackInfo1.setComm("第二个对象");
-    System.out.println(feedbackInfo.hashCode());
-    System.out.println(feedbackInfo1.hashCode());
-    System.out.println(feedbackInfo.equals(feedbackInfo1));
-    Study study=new Study();
-    study.hashCode();
+  String var1="sdfjsdhkfjh.jpg.jpeg";
+  int begin=var1.indexOf(".");
+  int last=var1.length();
+  String var2=var1.substring(begin,last);
+  int begin2=var1.lastIndexOf(".");
+  int last2=var1.length();
+  String var3=var1.substring(begin2,last2);
+    System.out.println(var2);
+    System.out.println(var3);
+}
+@Test
+    public void test12(){
+
+        double a=6.00000;
+        double b=6;
+    System.out.println(a);
+
+    BigDecimal bg=new BigDecimal(a/b*100).setScale(2, RoundingMode.HALF_UP);
+    System.out.println(bg.doubleValue());
+
+    DecimalFormat df1 = new DecimalFormat("###,###0.00");
+    System.out.println(df1.format(1111111111.1111112));
+
+}
+@Test
+    public void test13(){
+Peeler peeler=new Peeler("shenx");
+peeler.eat2();
+
+
+     }
+@Test
+    public void getFeedbackInfoMap()throws Exception{
+
+  Person person=new Person("1");
+  person.eat();
+  person.drink();
+
+  Person person1=new Person("2");
+  person1.eat();
+  person1.drink();
+
+}
+@Test
+    public void test14(){
+    feedbackVO feedbackVO=new feedbackVO();
+    feedbackVO feedbackVO1=new feedbackVO();
+    feedbackVO feedbackVO2=new feedbackVO();
+    feedbackVO.setSex("1");
+    feedbackVO1.setSex("2");
+    feedbackVO2.setSex("3");
+
+    String var1=JSONObject.toJSONString(feedbackVO, SerializerFeature.WriteMapNullValue);
+    String var2=JSONObject.toJSONString(feedbackVO,SerializerFeature.WriteNullListAsEmpty);
+    String var3=JSONObject.toJSONString(feedbackVO,SerializerFeature.WriteNullStringAsEmpty);
+
+
+    JSONArray feedbackVOList=new JSONArray();
+    feedbackVOList.add(feedbackVO);
+    feedbackVOList.add(feedbackVO1);
+    feedbackVOList.add(feedbackVO2);
+    JSONObject jsonObject=new JSONObject();
+    jsonObject.put("dddd",feedbackVOList);
+    JSONObject jsonObject1=new JSONObject();
+    jsonObject1.put("ddddddddd",jsonObject);
+
+    String var4=JSONObject.toJSONString(jsonObject1,SerializerFeature.WriteNullStringAsEmpty);
+    String var5=JSONObject.toJSONString(jsonObject1,SerializerFeature.WriteNullListAsEmpty);
+    String var6=JSONObject.toJSONString(jsonObject1,SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullListAsEmpty,SerializerFeature.WriteNullStringAsEmpty);
+    System.out.println(var1);
+    System.out.println(var2);
+    System.out.println(var3);
+    System.out.println(var4);
+    System.out.println(var5);
+    System.out.println(var6);
+}
+@Test
+    public void test15() throws Exception{
+//    HaoMaiClient haoMaiClient=new HaoMaiClient();
+    for (int i=0;i<30;i++) {
+        HashMap map = new HashMap();
+        String var1=null;
+        map.put("location", "CN101050501");
+        map.put("username", "HE1812281450091928");
+        long timestanp = new Date().getTime();
+        map.put("t", String.valueOf(timestanp));
+        map.put("sign", var1);
+        String secret = "cca7927e496245a5be692292c66983b7";
+
+        String username = "HE1812281450091928";
+        var1 = Weather.getSignature(map, secret);
+        String url = "https://api.heweather.com/s6/weather/now";
+        Map map1 = new HashMap();
+        map1.put("location", "CN101050501");
+        map1.put("username", username);
+        map1.put("t", String.valueOf(timestanp));
+        map1.put("sign", var1);
+
+        StringBuffer stringBuffer1 = new StringBuffer();
+        stringBuffer1.append("location=CN101050501")
+                .append("&username=").append(username)
+                .append("&t=").append(timestanp)
+                .append("&sign=").append(var1);
+        String ssss = HttpConnectionPoolUtil.post(url, map1);
+        url="https://api.heweather.com/s6/air/now";
+        String ssss1 = HttpConnectionPoolUtil.post(url, map1);
+        url="https://api.heweather.com/s6/weather/lifestyle";
+        String ssss2 = HttpConnectionPoolUtil.post(url, map1);
+        url="https://api.heweather.com/s6/weather/forecast";
+        String ssss3 = HttpConnectionPoolUtil.post(url, map1);
+        System.out.println(ssss);
+        System.out.println(ssss1);
+        System.out.println(ssss2);
+        System.out.println(ssss3);
+    }
+
 }
 }
+
+
 
 
 

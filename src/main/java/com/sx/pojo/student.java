@@ -9,9 +9,9 @@ public class student {
 
     public student(){};
 
-    public student(String name,String occupation,String description,String picture){
+    public student(student student,String name,String occupation,String description,String picture){
 
-        this.name=name;
+        this.name=student.getName();
         this.occupation=occupation;
         this.description=description;
         this.picture=picture;

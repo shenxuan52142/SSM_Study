@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sx.mapper.feedbackInfoMapper">
+
+    <resultMap id="feedbackInfoMap" type="com.sx.pojo.FeedbackInfo">
+        <id property="id" column="id"/>
+        <result property="url" column="url"/>
+        <result property="comm" column="comm"/>
+        <result property="type1" column="type1"/>
+        <result property="type2" column="type2"/>
+        <result property="type3" column="type3"/>
+        <result property="type4" column="type4"/>
+        <result property="time" column="time"/>
+        <result property="ucId" column="ucId"/>
+        <result property="ucid" column="ucid"/>
+    </resultMap>
+    <insert id="sendFeedback" parameterType="com.sx.pojo.FeedbackInfo" >
+        insert INTO
+           feedback_info(
+              id,
+              url,
+              comm,
+              type1,
+              type2,
+              type3,
+              type4,
+              time,
+              ucid
+           )
+           VALUES (
+            #{id},
+            #{url},
+            #{url},
+            #{type1},
+            #{type2},
+            #{type3},
+            #{type4},
+            #{time},
+            #{ucId}
+           )
+    </insert>
+ <!--<select id=""-->
+    <select id="getone" parameterType="int" resultType="com.sx.pojo.FeedbackInfo">
+        SELECT
+         DATE_FORMAT(time,'%Y年%m月%d日 %H:%i:%s') AS time
+         FROM feedback_info WHERE id=#{id}
+    </select>
+    <insert id="addlist" parameterType="FeedbackInfo" >
+        INSERT INTO
+  feedback_info(
+              id,
+              url,
+              comm,
+              type1,
+              type2,
+              type3,
+              type4
+           )
+           <foreach collection="list" item="FeedbackInfo" index="index" separator="union all">
+               SELECT
+               #{FeedbackInfo.id},
+               #{FeedbackInfo.url},
+               #{FeedbackInfo.comm},
+               #{FeedbackInfo.type1},
+               #{FeedbackInfo.type2},
+               #{FeedbackInfo.type3},
+               #{FeedbackInfo.type4}
+               FROM dual
+           </foreach>
+    </insert>
+
+    <select id="getall" parameterType="int" resultType="FeedbackInfo">
+        SELECT * FROM
+        feedback_info LEFT JOIN feedback_type ON
+        feedback_info.id=feedback_type.id
+        where DATE_SUB(CURDATE(),INTERVAL 2 DAY) <![CDATA[<=date(time)]]>
+    </select>
+
+    <insert id="addfeedbacktype" parameterType="FeedbackInfo">
+        INSERT INTO
+        feedback_type(
+        id,
+        name
+        )
+        <foreach collection="name" item="FeedbackInfo" index="index" separator="union all">
+            #{id},
+            SELECT
+            #{name}
+            FROM dual
+        </foreach>
+    </insert>
+
+    <select id="getOneFeedbackInfo" resultType="FeedbackInfo">
+        SELECT SQL_CALC_FOUND_ROWS *FROM feedback_info
+        limit 0,5;
+        SELECT FOUND _ROWS
+    </select>
+
+
+    <update id="updateFeedbackInfo" parameterType="java.util.Map">
+        <foreach collection="list" item="item"  separator=";">
+            UPDATE
+            feedback_info
+            SET
+            url=#{item.url}
+            WHERE
+            ucid=#{item.ucid}
+        </foreach>
+    </update>
+
+    <select id="getFeedbackInfoList" resultType="com.sx.pojo.FeedbackInfo">
+        SELECT * from feedback_info
+        <foreach collection="list" item="item" open="where id in (" close=")" separator=",">
+            #{item}
+        </foreach>
+        SELECT * from feedback_info
+        where id IN
+        <foreach collection="list" item="hehe" open="(" separator="," close=")">
+            #{hehe}
+        </foreach>
+
+
+    </select>
+
+
+    <select id="getFeedbackInfoMap" parameterType="java.util.Set" resultMap="feedbackInfoMap">
+        SELECT * from feedback_info
+        where
+        <choose>
+            <when test="ids!=null">
+                id in
+                <foreach collection="ids" item="id"  index="index" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </when>
+            <otherwise>
+                0=1
+            </otherwise>
+        </choose>
+    </select>
+    <select id="">
+        SELECT * FROM feedback_info
+        CASE WHEN type4='2' THEN
+
+    </select>
+</mapper>

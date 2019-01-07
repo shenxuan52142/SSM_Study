@@ -3,10 +3,22 @@ package com.sx.pojo;
 import java.util.List;
 
 public class feedbackVO {
-//    private String id;
-//    private String name;
-//    private String comm;
-//    private List<String> url;
-//    private List
-//
+    private String age;
+    private String sex;
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 }

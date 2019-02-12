@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sx.mapper.LuckSignMapper">
+    <insert id="addLuckSign" parameterType="com.sx.pojo.LuckSign" >
+        insert INTO
+        luck_sign_yi_ji(
+        suitable,
+        avoid
+        )
+        VALUES (
+        #{suitable},
+        #{avoid}
+        )
+    </insert>
+    <insert id="addFamousQutos" parameterType="com.sx.pojo.FamousQuotes" >
+        insert INTO
+        famous_quotes(
+        content,
+        type,
+        author
+        )
+        VALUES (
+        #{motto},
+        #{type},
+        #{author}
+        )
+    </insert>
+    <insert id="addyi" parameterType="com.sx.pojo.LuckSign" >
+        insert INTO
+        t_luck_yi(
+        suitable
+        )
+        VALUES (
+        #{suitable}
+        )
+    </insert>
+    <insert id="addji" parameterType="com.sx.pojo.LuckSign" >
+        insert INTO
+        t_luck_ji(
+        avoid
+        )
+        VALUES (
+        #{avoid}
+        )
+    </insert>
+    <insert id="addLuckSignTwo" parameterType="com.sx.pojo.LuckSign" >
+        insert INTO
+        t_luck_sign_yi_ji(
+        suitable,
+        avoid
+        )
+        VALUES (
+        #{suitable},
+        #{avoid}
+        )
+    </insert>
+    <insert id="addFinalLuckSign" parameterType="com.sx.pojo.YiJI" >
+        insert INTO
+        t_lucky_sign_yi_and_ji(
+        suitable,
+        avoid,
+        status
+        )
+        VALUES (
+        #{suitable},
+        #{avoid},
+        #{status}
+        )
+    </insert>
+
+</mapper>

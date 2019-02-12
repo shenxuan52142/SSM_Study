@@ -2,12 +2,14 @@ package com.sx.pojo;
 
 import java.util.Random;
 
-public class Person {
+public  class Person {
     private   String var1="this is Person";
     public String var2="22222222222";
     public static Random random=new Random();
     public static final int TEST=random.nextInt();
     public final int test=random.nextInt();
+    public Person(){}
+
 
     public  void eat(){
 
@@ -27,7 +29,7 @@ public class Person {
     Object process(Object input){
         return input;
     }
-   
+
 
 
 

@@ -298,6 +298,11 @@
       <artifactId>jedis</artifactId>
       <version>2.9.0</version>
     </dependency>
+    <dependency>
+      <groupId>com.iceyyy</groupId>
+      <artifactId>icenongli</artifactId>
+      <version>2.0</version>
+    </dependency>
      <!--https://mvnrepository.com/artifact/org.elasticsearch.client/transport-->
     <!--<dependency>-->
     <!--<groupId>org.elasticsearch.client</groupId>-->
@@ -349,6 +354,18 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.3</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.1</version>
+    </dependency>
+
 
 
     <!--分词-->

@@ -2,42 +2,20 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.hankcs.hanlp.HanLP;
-import com.hankcs.hanlp.tokenizer.SpeedTokenizer;
-import com.sx.aop.LoggerAspect;
-import com.sx.mapper.ArticleRepository;
 import com.sx.pojo.*;
-import com.sx.service.FeedbackInfoSearchService;
 import com.sx.service.StudentSService;
 import com.sx.service.feedbackSce;
 import com.sx.service.studentService;
-import com.sx.until.HaoMaiClient;
 import com.sx.until.HttpConnectionPoolUtil;
 import com.sx.until.Weather;
 import org.apache.commons.collections.map.CaseInsensitiveMap;
 
-import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
-import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
-import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
 //import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
@@ -49,9 +27,9 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.*;
 import java.util.*;
 
@@ -69,29 +47,29 @@ public class test {
     private feedbackSce feedbackSce;
     @Autowired
     ThreadPoolTaskExecutor taskExecutor;
-    @Autowired
-    FeedbackInfoSearchService feedbackInfoSearchService;
+//    @Autowired
+//    FeedbackInfoSearchService feedbackInfoSearchService;
 
     /** 注入客户端对象 基于原生API */
 //    @Autowired
 //    private Client client;
 
     /** 注入es服务器模板 */
-    @Autowired
-    private ElasticsearchTemplate elasticsearchTemplate;
-    @Autowired
-    ArticleRepository articleRepository;
+//    @Autowired
+//    private ElasticsearchTemplate elasticsearchTemplate;
+//    @Autowired
+//    ArticleRepository articleRepository;
     @Resource(name = "WeatherRestTemplate")
     private RestTemplate restTemplate;
 
     /**
      * 通过 ElasticsearchTemplate 创建索引和添加映射
      */
-    @Test
-    public void createIndex() {
-        elasticsearchTemplate.createIndex(FeedbackInfo.class);
-        elasticsearchTemplate.putMapping(FeedbackInfo.class);
-    }
+//    @Test
+//    public void createIndex() {
+//        elasticsearchTemplate.createIndex(FeedbackInfo.class);
+//        elasticsearchTemplate.putMapping(FeedbackInfo.class);
+//    }
 
 
 
@@ -131,23 +109,23 @@ public class test {
 //        feedback4.setTime("这里是时间");
 //        articleRepository.save(feedback4);
 
-        FeedbackInfo feedback5=new FeedbackInfo();
-        feedback5.setId(6);
-        feedback5.setUcId("小明爱吃水果");
-        feedback5.setTime("这里是时间");
-        articleRepository.save(feedback5);
-
-        FeedbackInfo feedback6=new FeedbackInfo();
-        feedback6.setId(4);
-        feedback6.setUcId("明日复明日");
-        feedback6.setTime("这里是时间");
-        articleRepository.save(feedback6);
-
-        FeedbackInfo feedback7=new FeedbackInfo();
-        feedback7.setId(5);
-        feedback7.setUcId("我有一块钱");
-        feedback7.setTime("这里是时间");
-        articleRepository.save(feedback7);
+//        FeedbackInfo feedback5=new FeedbackInfo();
+//        feedback5.setId(6);
+//        feedback5.setUcId("小明爱吃水果");
+//        feedback5.setTime("这里是时间");
+//        articleRepository.save(feedback5);
+//
+//        FeedbackInfo feedback6=new FeedbackInfo();
+//        feedback6.setId(4);
+//        feedback6.setUcId("明日复明日");
+//        feedback6.setTime("这里是时间");
+//        articleRepository.save(feedback6);
+//
+//        FeedbackInfo feedback7=new FeedbackInfo();
+//        feedback7.setId(5);
+//        feedback7.setUcId("我有一块钱");
+//        feedback7.setTime("这里是时间");
+//        articleRepository.save(feedback7);
 
 //        FeedbackInfo feedback8=new FeedbackInfo();
 //        feedback8.setId(6);
@@ -162,18 +140,18 @@ public class test {
     }
     @Test
     public void get(){
-        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("url", "小明送给小红一个巧克力");
-
-        Iterable<FeedbackInfo> feedbackInfos= feedbackInfoSearchService.findAll("小明送给小红一个巧克力");
-        Iterator<FeedbackInfo> iterator = feedbackInfos.iterator();
-        for (FeedbackInfo feedbackInfo:feedbackInfos){
-            String date=feedbackInfo.getUpdate_time();
-//            date=date.replace("T", " UTC");
-            System.out.println(date);
-            System.out.println(feedbackInfo.getUrl());
-
-
-        }
+//        MatchQueryBuilder queryBuilder = QueryBuilders.matchQuery("url", "小明送给小红一个巧克力");
+//
+//        Iterable<FeedbackInfo> feedbackInfos= feedbackInfoSearchService.findAll("小明送给小红一个巧克力");
+//        Iterator<FeedbackInfo> iterator = feedbackInfos.iterator();
+//        for (FeedbackInfo feedbackInfo:feedbackInfos){
+//            String date=feedbackInfo.getUpdate_time();
+////            date=date.replace("T", " UTC");
+//            System.out.println(date);
+//            System.out.println(feedbackInfo.getUrl());
+//
+//
+//        }
 
     }
 
@@ -187,22 +165,21 @@ public class test {
 
     @Test
 public void test3() throws Exception {
-        for (int i = 0; i < 10; i++) {
-            Thread.sleep(1000);
+
             HashMap map = new HashMap();
             map.put("location", "CN101011300");
-            map.put("username", "HE1812281450091928");
+            map.put("username", "HE1712181123121573");
             long timestanp = new Date().getTime();
-            map.put("t", timestanp);
-            String secret = "cca7927e496245a5be692292c66983b7";
+            map.put("t", String.valueOf(timestanp));
+            String secret = "56159ac35a45403a9ce51e453e8001f2";
 
-            String username = "HE1812281450091928";
-            String var1 = Weather.getSignature(map, secret);
+            String username = "HE1712181123121573";
+            String var1 = URLEncoder.encode(Weather.getSignature(map, secret),"utf-8");
 
             StringBuffer stringBuffer1 = new StringBuffer();
-            stringBuffer1.append("https://api.heweather.com/s6/weather/now").append("?location=CN101011300")
+            stringBuffer1.append("https://api.heweather.com/s6/weather/forecast").append("?location=CN101011300")
                     .append("&username=").append(username)
-                    .append("&t=").append(timestanp)
+                    .append("&t=").append(String.valueOf(timestanp))
                     .append("&sign=").append(var1);
             URI uri1 = URI.create(stringBuffer1.toString());
             String respone1 = restTemplate.getForObject(uri1, String.class);
@@ -217,7 +194,6 @@ public void test3() throws Exception {
 
 
 
-        }
     }
 
 
@@ -459,21 +435,23 @@ public void test11(){
 }
 @Test
     public void test13(){
-Peeler peeler=new Peeler("shenx");
-peeler.eat2();
-
+Person person=new Peeler("ssss");
+person.eat();
+person.drink();
 
      }
 @Test
     public void getFeedbackInfoMap()throws Exception{
 
-  Person person=new Person("1");
-  person.eat();
-  person.drink();
-
-  Person person1=new Person("2");
-  person1.eat();
-  person1.drink();
+//  Person person=new Person("1");
+//  person.eat();
+//  person.drink();
+////  List<FeedbackInfo> feedbackInfoList=Arrays.asList(new Person("ss"),new Peeler("hshsshsh"));
+//
+//  Person person1=new Person("2");
+//  person1.eat();
+//  person1.drink();
+    Class.forName("Person");
 
 }
 @Test
@@ -536,20 +514,53 @@ peeler.eat2();
                 .append("&username=").append(username)
                 .append("&t=").append(timestanp)
                 .append("&sign=").append(var1);
-        String ssss = HttpConnectionPoolUtil.post(url, map1);
+//        String ssss = HttpConnectionPoolUtil.getHttpClient();
         url="https://api.heweather.com/s6/air/now";
         String ssss1 = HttpConnectionPoolUtil.post(url, map1);
         url="https://api.heweather.com/s6/weather/lifestyle";
         String ssss2 = HttpConnectionPoolUtil.post(url, map1);
         url="https://api.heweather.com/s6/weather/forecast";
         String ssss3 = HttpConnectionPoolUtil.post(url, map1);
-        System.out.println(ssss);
+//        System.out.println(ssss);
         System.out.println(ssss1);
         System.out.println(ssss2);
         System.out.println(ssss3);
     }
 
 }
+
+@Test
+    public void SetTest(){
+       List<String> stringList=new ArrayList<String>();
+       Set<String> strings=new HashSet<String>();
+       String string="A,B,C,D,F,F";
+       Collections.addAll(stringList,string.split(","));
+       Collections.addAll(strings,string.split(","));
+    System.out.println(stringList.toString());
+    System.out.println(strings);
+}
+@Test
+    public void PriorityQueueTest(){
+        PriorityQueue<Integer> priorityQueue=new PriorityQueue<Integer>();
+
+        Queue<Integer> queue=new LinkedList<Integer>();
+    Random random=new Random(47);
+        for (int i=0;i<10;i++){
+//            System.out.println(i);
+            Integer a=random.nextInt(i+10);
+            System.out.println(a);
+            queue.offer(a);
+            priorityQueue.offer(a);
+        }
+    System.out.println(priorityQueue.toString());
+    System.out.println(priorityQueue);
+        for (int j=0;j<10;j++){
+            System.out.println(priorityQueue.poll());
+        }
+    System.out.println(queue.toString());
+    System.out.println(queue);
+}
+
 }
 
 

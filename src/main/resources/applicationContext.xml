@@ -6,7 +6,7 @@
        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:elasticsearch="http://www.springframework.org/schema/data/elasticsearch"
+
        xsi:schemaLocation="
      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -95,16 +95,16 @@
     <!--</bean>-->
 
     <!-- 扫描DAO包 自动创建实现 -->
-    <elasticsearch:repositories base-package="com.sx.mapper" />
+    <!--<elasticsearch:repositories base-package="com.sx.mapper" />-->
 
     <!-- 配置elasticsearch 连接 -->
     <!--<elasticsearch:transport-client cluster-name="${es.clusterName}" id="client" cluster-nodes="${es.transportAddresses}" />-->
-    <elasticsearch:transport-client cluster-name="my-application" id="client" cluster-nodes="127.0.0.1:9300" />
-    <!-- spring data elasticsearch DAO 必须依赖 elasticsearchTemplate  -->
-    <bean id="elasticsearchTemplate"
-          class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">
-        <constructor-arg name="client" ref="client" />
-    </bean>
+    <!--<elasticsearch:transport-client cluster-name="my-application" id="client" cluster-nodes="127.0.0.1:9300" />-->
+    <!--&lt;!&ndash; spring data elasticsearch DAO 必须依赖 elasticsearchTemplate  &ndash;&gt;-->
+    <!--<bean id="elasticsearchTemplate"-->
+          <!--class="org.springframework.data.elasticsearch.core.ElasticsearchTemplate">-->
+        <!--<constructor-arg name="client" ref="client" />-->
+    <!--</bean>-->
     <bean id="WeatherRestTemplate" class="org.springframework.web.client.RestTemplate"></bean>
     <aop:aspectj-autoproxy/>
 

@@ -87,4 +87,5 @@ public class HaoMaiClient {
         }
         return null;
     }
+
 }

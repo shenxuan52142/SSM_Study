@@ -1,22 +1,16 @@
 package com.sx.pojo;
 
-public class Book {
-    boolean checkedOut=false;
-   public void open(){
-       System.out.println("哈哈哈哈");
-   }
-  public   Book(boolean checkOut){
-        checkedOut=checkOut;
-    }
-    public  void checkIn(){
-        checkedOut=false;
-    }
-    protected void finalize()throws Throwable {
-        if (checkedOut){
-            System.out.println("Error : checked out");
-
-
+public class Book  {
+        public static final int staticFinalInt=Apple.random.nextInt(1000);
+        static {
+            System.out.println("i am book");
         }
-        super.finalize();
-    }
+
+        public  void speak(){
+            System.out.println(this+"sss");
+        }
+//        public String toString(){
+//            return "Booksssssss";
+//        }
+
 }

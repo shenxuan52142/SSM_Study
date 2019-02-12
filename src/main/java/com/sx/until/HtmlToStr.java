@@ -1,6 +1,10 @@
 package com.sx.until;
 
 import com.sx.pojo.FeedbackInfo;
+import com.sx.pojo.LunarSolarConverter;
+import com.sx.pojo.Peeler;
+import com.sx.pojo.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.view.facelets.FaceletException;
 import java.io.FileInputStream;
@@ -9,7 +13,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class HtmlToStr {
-    public static void main(String[] arg){
+    @Autowired
+    
+    public static void main(String[] arg) throws Exception{
 //        try{
 //            InputStream is =new FileInputStream("C:\\Users\\Administrator\\IdeaProjects\\SSM_Study\\src\\main\\webapp\\index.html");
 //            byte[] b=new byte[1000];
@@ -26,9 +32,8 @@ public class HtmlToStr {
 //        }catch (IOException e){
 //            e.printStackTrace();
 //        }
-        System.out.println("jdfjdk");
-        FeedbackInfo feedbackInfo=null;
-        String a=feedbackInfo.getUrl();
-        System.out.println(a);
+  Class.forName("com.sx.pojo.Peeler");
+
+     
     }
 }

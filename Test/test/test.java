@@ -437,7 +437,7 @@ public void test11(){
     public void test13(){
 Person person=new Peeler("ssss");
 person.eat();
-person.drink();
+
 
      }
 @Test

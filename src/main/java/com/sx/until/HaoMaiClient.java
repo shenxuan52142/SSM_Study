@@ -1,6 +1,8 @@
 package com.sx.until;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sx.reflect.A;
+import com.sx.reflect.HiddenC;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -18,74 +20,21 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 @Component
 public class HaoMaiClient {
-    @Autowired
-    HttpConnectionManager connManager;
-
-    public String get(String url, Map<String, String> map) throws IOException {
-        CloseableHttpClient httpClient = connManager.getHttpClient();
-//        HttpGet httpget = new HttpGet(path);
-//        String json=null;
-//        CloseableHttpResponse response=null;
-//        try {
-//            response = httpClient.execute(httpget);
-//            InputStream in=response.getEntity().getContent();
-//            json= IOUtils.toString(in);
-//            in.close();
-//        } catch (UnsupportedOperationException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }finally {
-//            if(response!=null){
-//                try {
-//                    response.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        return JSONObject.parseObject(json, clazz);
-//    }
-        String result = null;
-
-        HttpPost post = new HttpPost(url);
-        List<NameValuePair> pairs = new ArrayList<NameValuePair>();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            pairs.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
-        }
-        CloseableHttpResponse response = null;
-        try {
-            post.setEntity(new UrlEncodedFormEntity(pairs, "UTF-8"));
-            response = httpClient.execute(post);
-            if (response != null && response.getStatusLine().getStatusCode() == 200) {
-                HttpEntity entity = response.getEntity();
-                result = EntityUtils.toString(entity);
-
-
-            }
-            return result;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            e.printStackTrace();
-        } finally {
-            try {
-                httpClient.close();
-                if (response != null) {
-                    response.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return null;
+    public static void main(String[] args) throws Exception{
+        A a= HiddenC.makeA();
+        a.f();
+        callHiddernMethod(a,"g");
+        System.out.println(a.getClass().getName());
     }
-
+    static void callHiddernMethod(Object a,String methodName)throws Exception{
+        Method g=a.getClass().getDeclaredMethod(methodName);
+        g.setAccessible(true);
+        g.invoke(a);
+    }
 }

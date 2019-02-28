@@ -3,8 +3,8 @@ package com.sx.pojo;
 import java.util.List;
 
 public class feedbackVO {
-    private String age;
-    private String sex;
+    private String age, sex, name;
+
 
     public String getAge() {
         return age;

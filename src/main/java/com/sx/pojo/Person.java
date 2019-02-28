@@ -16,9 +16,9 @@ public  class Person {
         System.out.println("public static final int TEST="+TEST);
 
     }
-    public void drink(){
+    public void drink(String var1){
 
-        System.out.println("public final int test="+test);
+        System.out.println("public final int test="+var1);
     }
    public Person(String var1){
         System.out.println("Person+"+var1);
@@ -28,6 +28,9 @@ public  class Person {
     }
     Object process(Object input){
         return input;
+    }
+    private void walk(){
+        System.out.println("ssss");
     }
 
 

@@ -27,7 +27,7 @@
             <value>com.mysql.jdbc.Driver</value>
         </property>
         <property name="url">
-            <value>jdbc:mysql://localhost:3306/ptteng?serverTimezone=UTC&amp;characterEncoding=UTF-8&amp;rewriteBatchedStatements=true</value>
+            <value>jdbc:mysql://localhost:3306/school?serverTimezone=UTC&amp;characterEncoding=UTF-8&amp;rewriteBatchedStatements=true</value>
         </property>
         <property name="username">
             <value>root</value>

@@ -9,6 +9,12 @@ import com.sx.reflect.HiddenC;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.common.recycler.Recycler;
 import org.junit.Test;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -62,11 +68,14 @@ public class ClassTest {
    }
    @Test
     public void test4() throws Exception{
+
        LinkedStack<String> stringLinkedStack=new LinkedStack<String>();
        stringLinkedStack.push("123");
        stringLinkedStack.push("234");
        stringLinkedStack.push("345");
        String var1=null;
+       HashMap map = new HashMap();
+//       map.get();
        for (int i = 0; i <3 ; i++) {
            if ((var1=stringLinkedStack.pop())!=null){
                System.out.println(var1);
@@ -119,13 +128,28 @@ public class ClassTest {
 //        stringList.add("https://mmbiz.qpic.cn/mmbiz_png/dwEg6qJsiaXDMgzhHX2LHaV7eX3QHj35QRDsCtTT32uVDOyaO5DwJhrfCsAVMKfCUUpkwjGmRFWo91nEaHnqe0w/640?wx_fmt=png?x-oss-process=style/xmorient&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1");
 //        stringList.add("https://mmbiz.qpic.cn/mmbiz_jpg/o3xzCLywDeuvBz0twQYqPArK5DbbArPEaaymiaZ6AgtqLfFAqFXd4Jib3ekyZWtXycdfoEdc8QZpC23rz8dH2bJw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1");
 //        stringList.add("https://mmbiz.qpic.cn/mmbiz_png/dwEg6qJsiaXDMgzhHX2LHaV7eX3QHj35Q9gGpgk5sBphkC68yiaL7ANn9I4RjDvmYEuFycsLCiaNtcwibrxOllpKgA/640?wx_fmt=png?x-oss-process=style/xmorient&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1");
-        stringList.add("https://mmbiz.qpic.cn/mmbiz_png/l1QY8PRkx27L0aQyuoP2oZdmRlu1hCHM2LW46ibouOatbGFIfx9Gnlqhd5yp9PucMmgEdKQpgehBf1P7bEmlrmQ/640");
+        stringList.add("120.221.143.122:443/mmbiz_png/l1QY8PRkx27L0aQyuoP2oZdmRlu1hCHM2LW46ibouOatbGFIfx9Gnlqhd5yp9PucMmgEdKQpgehBf1P7bEmlrmQ/640");
         for (String var1:stringList){
             Random random=new Random();
 
             String path="C:\\shenxuan\\log\\"+random.nextInt()+".png";;
             Don.downloadPicture(var1,path);
         }
+    }
+    @Test
+    public void test10() throws Exception{
+        ResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
+        Resource res=resolver.getResource("classpath:beans.xml");
+
+        System.out.println(res.getURL());
+        DefaultListableBeanFactory factory=new DefaultListableBeanFactory();
+        XmlBeanDefinitionReader reader=new XmlBeanDefinitionReader(factory);
+        reader.loadBeanDefinitions(res);
+        System.out.println("init BeanFactory.");
+
+        feedbackVO feedbackVO=factory.getBean("feedbackVo1", com.sx.pojo.feedbackVO.class);
+        System.out.println(feedbackVO.getAge());
+
     }
 
 }
